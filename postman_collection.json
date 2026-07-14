@@ -1,0 +1,56 @@
+{
+  "info": {
+    "name": "Student Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Add Student",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"studentName\": \"Ali Raza\",\n  \"studentId\": \"S1001\",\n  \"email\": \"ali@example.com\",\n  \"course\": \"Computer Science\"\n}"
+        },
+        "url": { "raw": "{{base_url}}/students", "host": ["{{base_url}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "View All Students",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/students", "host": ["{{base_url}}"], "path": ["students"] }
+      }
+    },
+    {
+      "name": "View Single Student",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{base_url}}/students/1", "host": ["{{base_url}}"], "path": ["students", "1"] }
+      }
+    },
+    {
+      "name": "Update Student",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"studentName\": \"Ali Raza Khan\",\n  \"studentId\": \"S1001\",\n  \"email\": \"ali.khan@example.com\",\n  \"course\": \"Software Engineering\"\n}"
+        },
+        "url": { "raw": "{{base_url}}/students/1", "host": ["{{base_url}}"], "path": ["students", "1"] }
+      }
+    },
+    {
+      "name": "Delete Student",
+      "request": {
+        "method": "DELETE",
+        "url": { "raw": "{{base_url}}/students/1", "host": ["{{base_url}}"], "path": ["students", "1"] }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000" }
+  ]
+}

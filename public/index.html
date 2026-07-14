@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Management System</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 15px; background: #f5f6f8; }
+  h1 { color: #2c3e50; }
+  table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+  th { background: #2c3e50; color: #fff; }
+  form { background: #fff; padding: 15px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  input { display: block; width: 100%; margin: 6px 0; padding: 8px; box-sizing: border-box; }
+  button { padding: 8px 14px; background: #2c3e50; color: #fff; border: none; cursor: pointer; margin-top: 8px; }
+  button:hover { background: #1a252f; }
+  .delete-btn { background: #c0392b; }
+  .delete-btn:hover { background: #922b21; }
+</style>
+</head>
+<body>
+
+<h1>Student Management System</h1>
+
+<form id="addForm">
+  <h3>Add Student</h3>
+  <input type="text" id="studentName" placeholder="Student Name" required>
+  <input type="text" id="studentId" placeholder="Student ID" required>
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="text" id="course" placeholder="Course" required>
+  <button type="submit">Add Student</button>
+</form>
+
+<h3>All Students</h3>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Name</th><th>Student ID</th><th>Email</th><th>Course</th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="studentTable"></tbody>
+</table>
+
+<script>
+  const API_URL = '/students';
+
+  async function loadStudents() {
+    const res = await fetch(API_URL);
+    const students = await res.json();
+    const tbody = document.getElementById('studentTable');
+    tbody.innerHTML = '';
+    students.forEach(s => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${s.id}</td>
+        <td>${s.studentName}</td>
+        <td>${s.studentId}</td>
+        <td>${s.email}</td>
+        <td>${s.course}</td>
+        <td><button class="delete-btn" onclick="deleteStudent(${s.id})">Delete</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  document.getElementById('addForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+      studentName: document.getElementById('studentName').value,
+      studentId: document.getElementById('studentId').value,
+      email: document.getElementById('email').value,
+      course: document.getElementById('course').value
+    };
+    await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    e.target.reset();
+    loadStudents();
+  });
+
+  async function deleteStudent(id) {
+    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    loadStudents();
+  }
+
+  loadStudents();
+</script>
+
+</body>
+</html>
